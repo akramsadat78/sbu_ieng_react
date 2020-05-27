@@ -1,9 +1,9 @@
 import React from 'react';
-import FetchComponent from './fetch/FetchComponent';
+import AxiosComponent from './axios/AxiosComponent';
 
 function App() {
     return ( <
-        FetchComponent / >
+        AxiosComponent / >
     );
 }
 
