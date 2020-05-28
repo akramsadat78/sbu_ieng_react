@@ -2,14 +2,12 @@ import React from 'react';
 import axios from 'axios';
 import UserComponent from '../user/UserComponent';
 
-
 import {
     BrowserRouter as Router,
     Switch,
     Route,
     Link
 } from "react-router-dom";
-
 
 
 import clsx from 'clsx';
@@ -202,23 +200,36 @@ export default class AxiosComponent extends React.Component {
                 ul > {
                     items.map(item => ( <
                         li key = { item.title } >
+
                         <
-                        Link to = '/user' > { item.title } < /Link> <
+                        Link to = '/user' > { item.title } < /Link> {
+                            item.fields.map(item_field => ( <
+                                Route path = "/user"
+                                component = {
+                                    () => < UserComponent
+                                    title = { item.title }
+                                    id = { item.id }
+                                    field_name = { item_field.name }
+                                    field_title = { item_field.title }
+                                    field_type = { item_field.type }
+                                    field_required = { item_field.required }
+                                    field_options = { item_field.options }
+                                    />
+                                }
+                                />
+
+                            ))
+                        } <
                         /li>
                     ))
                 } <
                 /ul> <
                 /nav>
 
+
                 <
-                Route path = '/user' >
-                <
-                UserComponent / >
-                <
-                /Route> <
                 /div> <
                 /Router>
-
             );
         }
     }
