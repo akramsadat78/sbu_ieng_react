@@ -5,8 +5,7 @@ import UserComponent from './user/UserComponent';
 
 
 function App() {
-    return ( <
-        AxiosComponent / >
+    return ( < AxiosComponent / >
 
     );
 }

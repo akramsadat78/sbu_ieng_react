@@ -1,171 +1,250 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import InputBase from '@material-ui/core/InputBase';
+import React, { Component } from 'react';
+import axios from 'axios';
+import Select from 'react-select';
+
+export default class UserComponent extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            nameField: '',
+            valueNameField: '',
+            numberField: '',
+            valueNumberField: '',
+            dateField: '',
+            valueDateField: '',
+            selectText: '',
+            selectedOptionText: '',
+            selectLocation: '',
+            selectedOptionLocation: '',
+
+        };
+
+    }
 
 
-const BootstrapInput = withStyles((theme) => ({
-    root: {
-        'label + &': {
-            marginTop: theme.spacing(3),
-        },
-    },
-    input: {
-        borderRadius: 4,
-        position: 'relative',
-        backgroundColor: theme.palette.background.paper,
-        border: '1px solid #ced4da',
-        fontSize: 16,
-        padding: '10px 26px 10px 12px',
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
-        // Use the system font instead of the default Roboto font.
-        fontFamily: [
-            '-apple-system',
-            'BlinkMacSystemFont',
-            '"Segoe UI"',
-            'Roboto',
-            '"Helvetica Neue"',
-            'Arial',
-            'sans-serif',
-            '"Apple Color Emoji"',
-            '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"',
-        ].join(','),
-        '&:focus': {
-            borderRadius: 4,
-            borderColor: '#80bdff',
-            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-        },
-    },
-}))(InputBase);
 
-const useStyles = makeStyles((theme) => ({
-    margin: {
-        margin: theme.spacing(1),
-    },
-}));
+    /*
+  
+  handleInputChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value,
+      nameField : "aaaaa"
+    });
+  };
+*/
+    handleSubmit = e => {
+        e.preventDefault();
 
+        const {
+            nameField,
+            valueNameField,
+            numberField,
+            valueNumberField,
+            dateField,
+            valueDateField,
+            selectText,
+            selectedOptionText,
+            selectLocation,
+            selectedOptionLocation
+        } = this.state;
 
-/*
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: 200,
-    },
-  },
-}));*/
+        const book = {
+            nameField,
+            valueNameField,
+            numberField,
+            valueNumberField,
+            dateField,
+            valueDateField,
+            selectText,
+            selectedOptionText,
+            selectLocation,
+            selectedOptionLocation,
+        };
 
-export default function UserComponent(props) {
-    const classes = useStyles();
+        axios
+            .post('http://localhost:3001/create', book)
+            .then(() => console.log('Book Created'))
+            .catch(err => {
+                console.error(err);
+            });
+    };
 
-    if (props.field_type == 'Text') {
-        return (
+    /**************** handleChanges ******************/
+    handleChangeNameField(section, event) {
+        console.log(section);
+        this.setState({
+            [event.target.name]: event.target.value,
+            nameField: section,
+        });
+    }
 
+    handleChangeNumberField(section, event) {
+        console.log(section);
+        this.setState({
+            [event.target.name]: event.target.value,
+            numberField: section,
+        });
+    }
 
-            <
-            label > { props.field_title }:
-            <
-            TextField error id = "filled"
-            variant = "filled" / >
-            <
-            /label>
-
-        );
-    } else if (props.field_type == 'Request Type') {
-        return (
-
-            <
-            label >
-
-            { props.field_title }:
-            <
-            TextField error id = "filled"
-            variant = "filled" / >
-            <
-            /label>
-        );
-    } else if (props.field_type == 'Location') {
-        if (props.field_options != null) {
-            /* return props.field_options.map(item =>{
-                 return <CustomizedSelects i={item.label}/>;
-             })*/
-
-            //     return <CustomizedSelects i={props.id}/>;
-            return ( <
-                ul >
-
-                {
-                    props.field_options.map(item => ( <
-                        li key = { item.lable } >
-                        <
-                        Select labelId = "demo-customized-select-label"
-                        id = "demo-customized-select"
-                        input = { < BootstrapInput / > } >
-
-
-                        <
-                        MenuItem value = { 10 } > { item.label } < /MenuItem>
-
-                        <
-                        /Select> <
-                        /li>
-                    ))
-                } <
-                /ul>
-            );
+    handleChangeDateField(section, event) {
+            console.log(section);
+            this.setState({
+                [event.target.name]: event.target.value,
+                dateField: section,
+            });
         }
+        /*
+           handleChange = selectedOption => {
+            this.setState({ selectedOption });
+          };*/
+    handleChangeSelectedOptionText(section, e) {
+        this.setState({
+            selectedOptionText: e.value,
+            selectText: section,
+        });
+    };
+
+    handleChangeSelectedOptionLocation(section, e) {
+        this.setState({
+            //  [e.name]: e.value,
+            selectedOptionLocation: e.value,
+            selectLocation: section,
+        });
+    };
+
+
+    render() {
+
         return ( <
-            label > { props.field_title }:
+            div >
+
+            {
+                this.props.i.fields.map(id => {
+
+                    if (id.type === "Text") {
+                        if (id.options != null) {
+
+                            return ( <
+                                div >
+                                <
+                                label > { id.title } < /label> <
+                                Select
+                                // value={selectedOption}
+                                name = "selectedOptionText"
+                                onChange = {
+                                    (e) => this.handleChangeSelectedOptionText(id.name, e) }
+                                options = { id.options }
+                                /> <
+                                /div>
+                            )
+
+                        } else {
+                            return ( <
+                                div >
+                                <
+                                label > { id.title } < /label>
+
+                                <
+                                input type = "text"
+                                className = "form-control"
+                                name = "valueNameField"
+                                placeholder = { id.type }
+                                onChange = {
+                                    (e) => this.handleChangeNameField(id.name, e) }
+
+                                /> <
+                                /div>
+                            )
+                        }
+                    } else if (id.type === "Location") {
+                        if (id.options != null) {
+
+                            return ( <
+                                div >
+                                <
+                                label > { id.title } < /label> <
+                                Select
+                                // value={selectedOption}
+                                name = "selectedOptionLocation"
+                                onChange = {
+                                    (e) => this.handleChangeSelectedOptionLocation(id.name, e) }
+                                options = { id.options }
+                                /> <
+                                /div>
+                            )
+
+                        } else {
+                            return ( <
+                                div >
+                                <
+                                label > { id.title } < /label> <
+                                input type = "text"
+                                className = "form-control"
+                                name = "bookID"
+                                placeholder = { id.type }
+                                onChange = { this.handleInputChange }
+                                /> <
+                                /div>
+                            )
+                        }
+                    } else if (id.type === "Number") {
+                        return ( <
+                            div >
+                            <
+                            label > { id.title } < /label> <
+                            input type = "number"
+                            step = { 0.1 }
+                            precision = { 2 }
+                            className = "form-control"
+                            name = "valueNumberField"
+                            placeholder = { id.type }
+                            onChange = {
+                                (e) => this.handleChangeNumberField(id.name, e) }
+                            /> <
+                            /div>
+                        )
+                    } else if (id.type === "Date") {
+                        return ( <
+                            div >
+                            <
+                            label > { id.title } < /label> <
+                            input type = "date"
+                            className = "form-control"
+                            name = "valueDateField"
+                            placeholder = { id.type }
+                            onChange = {
+                                (e) => this.handleChangeDateField(id.name, e) }
+                            /> <
+                            /div>
+                        )
+                    } else {
+                        return <h1 > { id.type } < /h1>
+                    }
+                })
+            }
+
             <
-            TextField error id = "filled"
-            variant = "filled" / >
+            br / >
             <
-            /label>
-        );
-    } else {
-        return ( <
-            p > xxxxx < /p>
+            div className = "container" >
+            <
+            form onSubmit = { this.handleSubmit } >
+
+            <
+            div style = {
+                { width: '30%' } } >
+            <
+            button className = "btn btn-success"
+            type = "submit" >
+            Create <
+            /button> <
+            /div>
+
+            <
+            /form> <
+            /div> <
+            /div>
         );
     }
-}
-
-
-function CustomizedSelects(props) {
-    const classes = useStyles();
-    const [age, setAge] = React.useState('');
-    const handleChange = (event) => {
-        setAge(event.target.value);
-    };
-    return ( <
-        div >
-        <
-        FormControl className = { classes.margin } >
-        <
-        InputLabel id = "demo-customized-select-label" > Age < /InputLabel> <
-        Select labelId = "demo-customized-select-label"
-        id = "demo-customized-select"
-        value = { age }
-        onChange = { handleChange }
-        input = { < BootstrapInput / > } >
-        <
-        MenuItem value = "" >
-        <
-        em > None < /em> <
-        /MenuItem> <
-        MenuItem value = { 10 } > { props.i } < /MenuItem> <
-        MenuItem value = { 20 } > { props.i } < /MenuItem> <
-        MenuItem value = { 30 } > Thirty < /MenuItem> <
-        /Select> <
-        /FormControl>
-
-        <
-        /div>
-    );
 }

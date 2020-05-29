@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import UserComponent from '../user/UserComponent';
 
@@ -98,47 +98,8 @@ function MiniDrawer() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
-
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
-
     return ( <
         div className = { classes.root } >
-        <
-        CssBaseline / >
-        <
-        AppBar position = "fixed"
-        className = {
-            clsx(classes.appBar, {
-                [classes.appBarShift]: open,
-            })
-        } >
-        <
-        Toolbar >
-        <
-        IconButton color = "inherit"
-        onClick = { handleDrawerOpen }
-        edge = "start"
-        className = {
-            clsx(classes.menuButton, {
-                [classes.hide]: open,
-            })
-        } >
-        <
-        MenuIcon / >
-        <
-        /IconButton> <
-        Typography variant = "h4"
-        noWrap >
-        home page <
-        /Typography> <
-        /Toolbar> <
-        /AppBar>
-
         <
         main className = { classes.content } >
         <
@@ -160,7 +121,7 @@ export default class AxiosComponent extends React.Component {
     }
 
     componentDidMount() {
-        axios.get("http://localhost:3001/")
+        axios.get("http://localhost:3001/api/forms")
             .then(
                 (result) => {
                     this.setState({
@@ -200,34 +161,21 @@ export default class AxiosComponent extends React.Component {
                 ul > {
                     items.map(item => ( <
                         li key = { item.title } >
+                        <
+                        Link to = '/user' > { item.title } < /Link>
 
                         <
-                        Link to = '/user' > { item.title } < /Link> {
-                            item.fields.map(item_field => ( <
-                                Route path = "/user"
-                                component = {
-                                    () => < UserComponent
-                                    title = { item.title }
-                                    id = { item.id }
-                                    field_name = { item_field.name }
-                                    field_title = { item_field.title }
-                                    field_type = { item_field.type }
-                                    field_required = { item_field.required }
-                                    field_options = { item_field.options }
-                                    />
-                                }
-                                />
-
-                            ))
-                        } <
+                        Route path = "/user"
+                        component = {
+                            () => < UserComponent i = { item }
+                            /> 
+                        }
+                        /> <
                         /li>
                     ))
                 } <
                 /ul> <
-                /nav>
-
-
-                <
+                /nav> <
                 /div> <
                 /Router>
             );
