@@ -4,6 +4,7 @@ import UserComponent from '../user/UserComponent';
 import UserCom from '../user/UserCom';
 import Title from '../user/Title';
 
+
 import {
     BrowserRouter as Router,
     Switch,
@@ -118,18 +119,18 @@ export default class AxiosComponent extends React.Component {
         this.state = {
             error: null,
             isLoaded: false,
-            items: [],
+            fields: [],
             url: ''
         };
     }
 
     componentDidMount() {
-        axios.get("http://localhost:3001/api/forms")
+        axios.get(`http://localhost:3001/api/forms/${this.props.idf}`)
             .then(
                 (result) => {
                     this.setState({
                         isLoaded: true,
-                        items: result.data.items,
+                        fields: result.data.fields,
                     });
                 },
                 // Note: it's important to handle errors here
@@ -142,41 +143,13 @@ export default class AxiosComponent extends React.Component {
                     });
                 }
             )
-    }
-
-    compt() {
-        axios.get("http://localhost:3001/api/forms")
-            .then(
-                (result) => {
-                    this.setState({
-                        isLoaded: true,
-                        items: result.data.items,
-                    });
-                },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            )
-    }
-
-
-    func(section) {
-        this.setState({
-            url: section,
-        });
     }
 
 
 
     render() {
 
-        const { error, isLoaded, items } = this.state;
+        const { error, isLoaded, fields } = this.state;
         if (error) {
             return <div > Error: { error.message } < /div>;
         } else if (!isLoaded) {
@@ -185,43 +158,14 @@ export default class AxiosComponent extends React.Component {
 
 
             return ( <
-                Router >
-
-                <
-                Route path = { `/` }
-                component = {
-                    () => < Title i = { items }
-                    /> 
-                }
-                />
-
-                <
-                MiniDrawer / >
-                <
-                div >
-                <
-                nav >
-                <
                 ul > {
-                    items.map((item, index) => ( <
-                        li key = { index } >
-                        <
-                        Route path = { `/user${index + 1}` }
-                        component = {
-                            () => < UserCom i = { items }
-                            /> 
-                        }
-                        />
-
-
-                        <
+                    fields.map((item, index) => ( <
+                        li key = { index } > { item.name } <
                         /li>
                     ))
                 } <
-                /ul> <
-                /nav> <
-                /div> <
-                /Router>
+                /ul>
+
             );
         }
     }

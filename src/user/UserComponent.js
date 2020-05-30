@@ -115,7 +115,6 @@ export default class UserComponent extends Component {
 
 
     render() {
-
         return ( <
             div >
 
