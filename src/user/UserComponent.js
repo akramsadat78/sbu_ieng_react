@@ -1,7 +1,9 @@
+/* imports */
 import React, { Component } from 'react';
 import axios from 'axios';
 import Select from 'react-select';
 
+{ /* component of UserComponent for showing user's form and send imformations to backend*/ }
 export default class UserComponent extends Component {
     constructor(props) {
         super(props);
@@ -17,22 +19,10 @@ export default class UserComponent extends Component {
             selectedOptionText: '',
             selectLocation: '',
             selectedOptionLocation: '',
-
         };
 
     }
 
-
-
-    /*
-  
-  handleInputChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value,
-      nameField : "aaaaa"
-    });
-  };
-*/
     handleSubmit = e => {
         e.preventDefault();
 
@@ -49,7 +39,7 @@ export default class UserComponent extends Component {
             selectedOptionLocation
         } = this.state;
 
-        const book = {
+        const detailsFormInput = {
             nameField,
             valueNameField,
             numberField,
@@ -63,16 +53,14 @@ export default class UserComponent extends Component {
         };
 
         axios
-            .post('http://localhost:3001/create', book)
-            .then(() => console.log('Book Created'))
+            .post('http://localhost:3001/getData', detailsFormInput)
             .catch(err => {
                 console.error(err);
             });
     };
 
-    /**************** handleChanges ******************/
+    /* handleChanges */
     handleChangeNameField(section, event) {
-        console.log(section);
         this.setState({
             [event.target.name]: event.target.value,
             nameField: section,
@@ -80,7 +68,6 @@ export default class UserComponent extends Component {
     }
 
     handleChangeNumberField(section, event) {
-        console.log(section);
         this.setState({
             [event.target.name]: event.target.value,
             numberField: section,
@@ -88,16 +75,12 @@ export default class UserComponent extends Component {
     }
 
     handleChangeDateField(section, event) {
-            console.log(section);
-            this.setState({
-                [event.target.name]: event.target.value,
-                dateField: section,
-            });
-        }
-        /*
-           handleChange = selectedOption => {
-            this.setState({ selectedOption });
-          };*/
+        this.setState({
+            [event.target.name]: event.target.value,
+            dateField: section,
+        });
+    }
+
     handleChangeSelectedOptionText(section, e) {
         this.setState({
             selectedOptionText: e.value,
@@ -107,30 +90,26 @@ export default class UserComponent extends Component {
 
     handleChangeSelectedOptionLocation(section, e) {
         this.setState({
-            //  [e.name]: e.value,
             selectedOptionLocation: e.value,
             selectLocation: section,
         });
     };
-
 
     render() {
         return ( <
             div >
 
             {
-                this.props.i.fields.map(id => {
-
+                this.props.i.map(id => {
                     if (id.type === "Text") {
+
                         if (id.options != null) {
 
                             return ( <
                                 div >
                                 <
                                 label > { id.title } < /label> <
-                                Select
-                                // value={selectedOption}
-                                name = "selectedOptionText"
+                                Select name = "selectedOptionText"
                                 onChange = {
                                     (e) => this.handleChangeSelectedOptionText(id.name, e) }
                                 options = { id.options }
@@ -139,33 +118,32 @@ export default class UserComponent extends Component {
                             )
 
                         } else {
+
                             return ( <
                                 div >
                                 <
-                                label > { id.title } < /label>
-
-                                <
+                                label > { id.title } < /label> <
                                 input type = "text"
                                 className = "form-control"
                                 name = "valueNameField"
                                 placeholder = { id.type }
                                 onChange = {
                                     (e) => this.handleChangeNameField(id.name, e) }
-
                                 /> <
                                 /div>
                             )
+
                         }
+
                     } else if (id.type === "Location") {
+
                         if (id.options != null) {
 
                             return ( <
                                 div >
                                 <
                                 label > { id.title } < /label> <
-                                Select
-                                // value={selectedOption}
-                                name = "selectedOptionLocation"
+                                Select name = "selectedOptionLocation"
                                 onChange = {
                                     (e) => this.handleChangeSelectedOptionLocation(id.name, e) }
                                 options = { id.options }
@@ -174,6 +152,7 @@ export default class UserComponent extends Component {
                             )
 
                         } else {
+
                             return ( <
                                 div >
                                 <
@@ -186,8 +165,11 @@ export default class UserComponent extends Component {
                                 /> <
                                 /div>
                             )
+
                         }
+
                     } else if (id.type === "Number") {
+
                         return ( <
                             div >
                             <
@@ -203,7 +185,9 @@ export default class UserComponent extends Component {
                             /> <
                             /div>
                         )
+
                     } else if (id.type === "Date") {
+
                         return ( <
                             div >
                             <
@@ -217,14 +201,19 @@ export default class UserComponent extends Component {
                             /> <
                             /div>
                         )
+
                     } else {
+
                         return <h1 > { id.type } < /h1>
+
                     }
+
                 })
             }
 
             <
             br / >
+
             <
             div className = "container" >
             <
@@ -236,7 +225,7 @@ export default class UserComponent extends Component {
             <
             button className = "btn btn-success"
             type = "submit" >
-            Create <
+            submit <
             /button> <
             /div>
 
