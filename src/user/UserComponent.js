@@ -1,7 +1,23 @@
 /* imports */
-import React, { Component } from 'react';
+import React, { Component, useReducer } from 'react';
 import axios from 'axios';
 import Select from 'react-select';
+import '../css/secondPage.css';
+
+const customStyles = {
+    control: base => ({
+
+        ...base,
+        borderRadius: 30,
+
+        borderColor: "black",
+
+
+    }),
+
+
+};
+
 
 { /* component of UserComponent for showing user's form and send imformations to backend*/ }
 export default class UserComponent extends Component {
@@ -98,6 +114,8 @@ export default class UserComponent extends Component {
     render() {
         return ( <
             div >
+            <
+            div id = "border" >
 
             {
                 this.props.i.map(id => {
@@ -108,12 +126,22 @@ export default class UserComponent extends Component {
                             return ( <
                                 div >
                                 <
+                                div id = "section" >
+                                <
+                                div id = "lables" >
+                                <
                                 label > { id.title } < /label> <
+                                /div> <
+                                div id = "selects" >
+                                <
                                 Select name = "selectedOptionText"
                                 onChange = {
                                     (e) => this.handleChangeSelectedOptionText(id.name, e) }
                                 options = { id.options }
+                                styles = { customStyles }
                                 /> <
+                                /div> <
+                                /div> <
                                 /div>
                             )
 
@@ -122,14 +150,22 @@ export default class UserComponent extends Component {
                             return ( <
                                 div >
                                 <
+                                div id = "section" >
+                                <
+                                div id = "lables" >
+                                <
                                 label > { id.title } < /label> <
+                                /div> <
                                 input type = "text"
                                 className = "form-control"
                                 name = "valueNameField"
                                 placeholder = { id.type }
                                 onChange = {
                                     (e) => this.handleChangeNameField(id.name, e) }
-                                /> <
+                                />
+
+                                <
+                                /div> <
                                 /div>
                             )
 
@@ -142,12 +178,22 @@ export default class UserComponent extends Component {
                             return ( <
                                 div >
                                 <
+                                div id = "section" >
+                                <
+                                div id = "lables" >
+                                <
                                 label > { id.title } < /label> <
+                                /div> <
+                                div id = "selects" >
+                                <
                                 Select name = "selectedOptionLocation"
                                 onChange = {
                                     (e) => this.handleChangeSelectedOptionLocation(id.name, e) }
                                 options = { id.options }
+                                styles = { customStyles }
                                 /> <
+                                /div> <
+                                /div> <
                                 /div>
                             )
 
@@ -156,13 +202,19 @@ export default class UserComponent extends Component {
                             return ( <
                                 div >
                                 <
+                                div id = "section" >
+                                <
+                                div id = "lables" >
+                                <
                                 label > { id.title } < /label> <
+                                /div> <
                                 input type = "text"
                                 className = "form-control"
                                 name = "bookID"
                                 placeholder = { id.type }
                                 onChange = { this.handleInputChange }
                                 /> <
+                                /div> <
                                 /div>
                             )
 
@@ -173,7 +225,12 @@ export default class UserComponent extends Component {
                         return ( <
                             div >
                             <
+                            div id = "section" >
+                            <
+                            div id = "lables" >
+                            <
                             label > { id.title } < /label> <
+                            /div> <
                             input type = "number"
                             step = { 0.1 }
                             precision = { 2 }
@@ -183,6 +240,7 @@ export default class UserComponent extends Component {
                             onChange = {
                                 (e) => this.handleChangeNumberField(id.name, e) }
                             /> <
+                            /div> <
                             /div>
                         )
 
@@ -191,7 +249,12 @@ export default class UserComponent extends Component {
                         return ( <
                             div >
                             <
+                            div id = "section" >
+                            <
+                            div id = "lables" >
+                            <
                             label > { id.title } < /label> <
+                            /div> <
                             input type = "date"
                             className = "form-control"
                             name = "valueDateField"
@@ -199,6 +262,7 @@ export default class UserComponent extends Component {
                             onChange = {
                                 (e) => this.handleChangeDateField(id.name, e) }
                             /> <
+                            /div> <
                             /div>
                         )
 
@@ -209,13 +273,12 @@ export default class UserComponent extends Component {
                     }
 
                 })
-            }
-
+            } <
+            /div> <
+            div id = "border2" >
             <
-            br / >
+            div id = "section" >
 
-            <
-            div className = "container" >
             <
             form onSubmit = { this.handleSubmit } >
 
@@ -223,8 +286,8 @@ export default class UserComponent extends Component {
             div style = {
                 { width: '30%' } } >
             <
-            button className = "btn btn-success"
-            type = "submit" >
+            button type = "submit"
+            class = "button" >
             submit <
             /button> <
             /div>
@@ -232,6 +295,9 @@ export default class UserComponent extends Component {
             <
             /form> <
             /div> <
+            /div>
+
+            <
             /div>
         );
     }
