@@ -1,8 +1,21 @@
 /* imports */
 import React, { Component, useReducer } from 'react';
-import axios from 'axios';
-import Select from 'react-select';
 import '../css/secondPage.css';
+import axios from 'axios';
+import InputTextField from './InputTextField';
+import DropdownSelect from './DropdownSelect';
+
+
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        '& > *': {
+            margin: theme.spacing(1),
+            width: '25ch',
+        },
+    },
+}));
 
 const customStyles = {
     control: base => ({
@@ -21,284 +34,118 @@ const customStyles = {
 
 { /* component of UserComponent for showing user's form and send imformations to backend*/ }
 export default class UserComponent extends Component {
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            nameField: '',
-            valueNameField: '',
-            numberField: '',
-            valueNumberField: '',
-            dateField: '',
-            valueDateField: '',
-            selectText: '',
-            selectedOptionText: '',
-            selectLocation: '',
-            selectedOptionLocation: '',
-        };
-
+    state = {
+        fields: this.props.idform
     }
 
-    handleSubmit = e => {
-        e.preventDefault();
+    _handleChange = event => {
+        this.setState({
+            [event.currentTarget.name]: event.currentTarget.value
+        });
+    }
 
-        const {
-            nameField,
-            valueNameField,
-            numberField,
-            valueNumberField,
-            dateField,
-            valueDateField,
-            selectText,
-            selectedOptionText,
-            selectLocation,
-            selectedOptionLocation
-        } = this.state;
+    submitform = event => {
+        const { fields, ...inputFields } = this.state;
 
-        const detailsFormInput = {
-            nameField,
-            valueNameField,
-            numberField,
-            valueNumberField,
-            dateField,
-            valueDateField,
-            selectText,
-            selectedOptionText,
-            selectLocation,
-            selectedOptionLocation,
-        };
+        event.preventDefault();
 
         axios
-            .post('http://localhost:3001/getData', detailsFormInput)
+            .post('http://localhost:3001/getData', inputFields)
             .catch(err => {
                 console.error(err);
-            });
-    };
+            })
 
-    /* handleChanges */
-    handleChangeNameField(section, event) {
-        this.setState({
-            [event.target.name]: event.target.value,
-            nameField: section,
-        });
     }
-
-    handleChangeNumberField(section, event) {
-        this.setState({
-            [event.target.name]: event.target.value,
-            numberField: section,
-        });
-    }
-
-    handleChangeDateField(section, event) {
-        this.setState({
-            [event.target.name]: event.target.value,
-            dateField: section,
-        });
-    }
-
-    handleChangeSelectedOptionText(section, e) {
-        this.setState({
-            selectedOptionText: e.value,
-            selectText: section,
-        });
-    };
-
-    handleChangeSelectedOptionLocation(section, e) {
-        this.setState({
-            selectedOptionLocation: e.value,
-            selectLocation: section,
-        });
-    };
 
     render() {
+        const { fields } = this.state;
+
         return ( <
-            div >
-            <
-            div id = "border" >
-
-            {
-                this.props.i.map(id => {
-                    if (id.type === "Text") {
-
-                        if (id.options != null) {
-
-                            return ( <
-                                div >
-                                <
-                                div id = "section" >
-                                <
-                                div id = "lables" >
-                                <
-                                label > { id.title } < /label> <
-                                /div> <
-                                div id = "selects" >
-                                <
-                                Select name = "selectedOptionText"
-                                onChange = {
-                                    (e) => this.handleChangeSelectedOptionText(id.name, e) }
-                                options = { id.options }
-                                styles = { customStyles }
-                                /> <
-                                /div> <
-                                /div> <
-                                /div>
-                            )
-
-                        } else {
-
-                            return ( <
-                                div >
-                                <
-                                div id = "section" >
-                                <
-                                div id = "lables" >
-                                <
-                                label > { id.title } < /label> <
-                                /div> <
-                                input type = "text"
-                                className = "form-control"
-                                name = "valueNameField"
-                                placeholder = { id.type }
-                                onChange = {
-                                    (e) => this.handleChangeNameField(id.name, e) }
-                                />
-
-                                <
-                                /div> <
-                                /div>
-                            )
-
-                        }
-
-                    } else if (id.type === "Location") {
-
-                        if (id.options != null) {
-
-                            return ( <
-                                div >
-                                <
-                                div id = "section" >
-                                <
-                                div id = "lables" >
-                                <
-                                label > { id.title } < /label> <
-                                /div> <
-                                div id = "selects" >
-                                <
-                                Select name = "selectedOptionLocation"
-                                onChange = {
-                                    (e) => this.handleChangeSelectedOptionLocation(id.name, e) }
-                                options = { id.options }
-                                styles = { customStyles }
-                                /> <
-                                /div> <
-                                /div> <
-                                /div>
-                            )
-
-                        } else {
-
-                            return ( <
-                                div >
-                                <
-                                div id = "section" >
-                                <
-                                div id = "lables" >
-                                <
-                                label > { id.title } < /label> <
-                                /div> <
-                                input type = "text"
-                                className = "form-control"
-                                name = "bookID"
-                                placeholder = { id.type }
-                                onChange = { this.handleInputChange }
-                                /> <
-                                /div> <
-                                /div>
-                            )
-
-                        }
-
-                    } else if (id.type === "Number") {
-
+            form onSubmit = { this.submitform } > {
+                fields.map(form => {
+                    if (form.options != null) {
                         return ( <
                             div >
                             <
-                            div id = "section" >
-                            <
-                            div id = "lables" >
-                            <
-                            label > { id.title } < /label> <
-                            /div> <
-                            input type = "number"
-                            step = { 0.1 }
-                            precision = { 2 }
-                            className = "form-control"
-                            name = "valueNumberField"
-                            placeholder = { id.type }
-                            onChange = {
-                                (e) => this.handleChangeNumberField(id.name, e) }
+                            label > { form.title } < /label> <
+                            DropdownSelect name = { form.name }
+                            lableName = {
+                                form.options.map(i => {
+                                    return i.label
+                                })
+                            }
+                            val = {
+                                form.options.map(i => {
+                                    if (form.type === "Text") {
+                                        return i.value
+                                    } else {
+                                        return i.value.lat + " " + i.value.long
+                                    }
+                                })
+                            }
+                            placeholder = { form.title }
+                            _handleChange = { this._handleChange }
                             /> <
-                            /div> <
                             /div>
-                        )
-
-                    } else if (id.type === "Date") {
-
-                        return ( <
-                            div >
-                            <
-                            div id = "section" >
-                            <
-                            div id = "lables" >
-                            <
-                            label > { id.title } < /label> <
-                            /div> <
-                            input type = "date"
-                            className = "form-control"
-                            name = "valueDateField"
-                            placeholder = { id.type }
-                            onChange = {
-                                (e) => this.handleChangeDateField(id.name, e) }
-                            /> <
-                            /div> <
-                            /div>
-                        )
-
-                    } else {
-
-                        return <h1 > { id.type } < /h1>
-
+                        );
                     }
-
+                    if (form.type === "Text") {
+                        return ( <
+                            div >
+                            <
+                            label > { form.title } < /label> <
+                            InputTextField name = { form.name }
+                            placeholder = { form.title }
+                            _handleChange = { this._handleChange }
+                            /> <
+                            /div>
+                        );
+                    }
+                    if (form.type === "Number") {
+                        return ( <
+                            div >
+                            <
+                            label > { form.title } < /label> <
+                            InputTextField name = { form.name }
+                            placeholder = { form.title }
+                            _handleChange = { this._handleChange }
+                            /> <
+                            /div>
+                        );
+                    }
+                    if (form.type === "Date") {
+                        return ( <
+                            div >
+                            <
+                            label > { form.title } < /label> <
+                            InputTextField name = { form.name }
+                            placeholder = { form.title }
+                            _handleChange = { this._handleChange }
+                            /> <
+                            /div>
+                        );
+                    }
+                    if (form.type === "Location") {
+                        return ( <
+                            div >
+                            <
+                            label > { form.title } < /label> <
+                            InputTextField name = { form.name }
+                            placeholder = { form.title }
+                            _handleChange = { this._handleChange }
+                            /> <
+                            /div>
+                        );
+                    }
                 })
-            } <
-            /div> <
-            div id = "border2" >
-            <
-            div id = "section" >
+            }
 
             <
-            form onSubmit = { this.handleSubmit } >
+            input type = "submit" / >
+            <
+            /form>
+        )
 
-            <
-            div style = {
-                { width: '30%' } } >
-            <
-            button type = "submit"
-            class = "button" >
-            submit <
-            /button> <
-            /div>
-
-            <
-            /form> <
-            /div> <
-            /div>
-
-            <
-            /div>
-        );
     }
 }

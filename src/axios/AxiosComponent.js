@@ -9,6 +9,7 @@ import {
     Route,
     Link
 } from "react-router-dom";
+import UserComponent from '../user/UserComponent';
 
 /* component AxiosComponent for getting titles and details of forms from backend  */
 export default class AxiosComponent extends React.Component {
@@ -42,14 +43,15 @@ export default class AxiosComponent extends React.Component {
 
         render() {
                 const { error, isLoaded, items } = this.state;
-
                 if (error) {
                     return <div > Error: { error.message } < /div>;
                 } else if (!isLoaded) {
                     return <div > Loading... < /div>;
                 } else {
 
-                    return ( <
+                    return (
+
+                        <
                         Router >
 
                         { /* component of FormsTitle for showing titles's link */ } <
@@ -58,14 +60,22 @@ export default class AxiosComponent extends React.Component {
                             () => < FormsTitle i = { items }
                             /> }/ >
 
-                            { /* component of FormDetails for getting details of form from backend */ } {
+                            {
+                                /* component of FormDetails for getting details of form from backend
+                                              {items.map( (item, index)=> (
+                                                 <Route   path={`/user${index + 1}`} component={() => <FormDetails idform={item.id}/>}/>
+                                              ))}
+                                 */
+                            } {
                                 items.map((item, index) => ( <
                                         Route path = { `/user${index + 1}` }
                                         component = {
-                                            () => < FormDetails idform = { item.id }
+                                            () => < UserComponent idform = { item.fields }
                                             />}/ >
                                         ))
                                 }
+
+
 
                                 <
                                 /Router>
