@@ -1,12 +1,15 @@
+/* import **/
 import React from 'react';
 
-const DropdownSelect = ({ name, lableName, _handleChange, val }) => ( <
+/* select tag */
+const DropdownSelect = ({ required, name, lableName, _handleChange, val }) => ( <
         div >
         <
         select name = { name }
-        onChange = { _handleChange } >
+        onChange = { _handleChange }
+        required = { required } >
         <
-        option value = "" > select < /option> {
+        option value = "" > select item < /option> {
             lableName.map((values, i) => < option value = { val[i] }
                 key = { values } > { values } < /option>)} <
                 /select>

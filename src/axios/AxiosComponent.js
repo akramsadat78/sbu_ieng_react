@@ -49,9 +49,7 @@ export default class AxiosComponent extends React.Component {
                     return <div > Loading... < /div>;
                 } else {
 
-                    return (
-
-                        <
+                    return ( <
                         Router >
 
                         { /* component of FormsTitle for showing titles's link */ } <
@@ -60,13 +58,7 @@ export default class AxiosComponent extends React.Component {
                             () => < FormsTitle i = { items }
                             /> }/ >
 
-                            {
-                                /* component of FormDetails for getting details of form from backend
-                                              {items.map( (item, index)=> (
-                                                 <Route   path={`/user${index + 1}`} component={() => <FormDetails idform={item.id}/>}/>
-                                              ))}
-                                 */
-                            } {
+                            { /* component of FormDetails for getting details of form from backend*/ } {
                                 items.map((item, index) => ( <
                                         Route path = { `/user${index + 1}` }
                                         component = {
@@ -74,8 +66,6 @@ export default class AxiosComponent extends React.Component {
                                             />}/ >
                                         ))
                                 }
-
-
 
                                 <
                                 /Router>

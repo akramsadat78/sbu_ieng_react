@@ -1,3 +1,5 @@
+/* data */
+
 #name {
     text-align: center;
     font-weight: bold;
@@ -5,6 +7,9 @@
     margin-bottom: 2%;
     margin-top: 2%;
 }
+
+
+/* border */
 
 #border {
     border: solid rgb(12, 6, 7);
@@ -32,6 +37,7 @@
     margin: 1%;
     padding: 1%;
     list-style: none;
+    border-radius: 10px;
 }
 
 #border li a {

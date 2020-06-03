@@ -4,33 +4,7 @@ import '../css/secondPage.css';
 import axios from 'axios';
 import InputTextField from './InputTextField';
 import DropdownSelect from './DropdownSelect';
-
-
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        '& > *': {
-            margin: theme.spacing(1),
-            width: '25ch',
-        },
-    },
-}));
-
-const customStyles = {
-    control: base => ({
-
-        ...base,
-        borderRadius: 30,
-
-        borderColor: "black",
-
-
-    }),
-
-
-};
-
+import googleImg from "../img/google.jpg";
 
 { /* component of UserComponent for showing user's form and send imformations to backend*/ }
 export default class UserComponent extends Component {
@@ -50,26 +24,41 @@ export default class UserComponent extends Component {
 
         event.preventDefault();
 
+        alert("form information enterd :) ")
+
         axios
             .post('http://localhost:3001/getData', inputFields)
             .catch(err => {
                 console.error(err);
             })
-
     }
 
     render() {
         const { fields } = this.state;
 
-        return ( <
-            form onSubmit = { this.submitform } > {
+        return (
+
+            <
+            div >
+            <
+            div id = "name" > please fill out this form < /div> <
+            form onSubmit = { this.submitform } >
+            <
+            div id = "border" > {
                 fields.map(form => {
                     if (form.options != null) {
                         return ( <
-                            div >
+                            div id = "section" >
+
+                            <
+                            div id = "lables" >
                             <
                             label > { form.title } < /label> <
+                            /div>
+
+                            <
                             DropdownSelect name = { form.name }
+                            required = { Boolean(form.required) }
                             lableName = {
                                 form.options.map(i => {
                                     return i.label
@@ -86,66 +75,115 @@ export default class UserComponent extends Component {
                             }
                             placeholder = { form.title }
                             _handleChange = { this._handleChange }
-                            /> <
+                            />
+
+                            <
                             /div>
                         );
                     }
                     if (form.type === "Text") {
                         return ( <
-                            div >
+                            div id = "section" >
+
+                            <
+                            div id = "lables" >
                             <
                             label > { form.title } < /label> <
+                            /div>
+
+                            <
                             InputTextField name = { form.name }
-                            placeholder = { form.title }
+                            placeholder = "enter text"
+                            type = "text"
+                            required = { Boolean(form.required) }
                             _handleChange = { this._handleChange }
-                            /> <
+                            />
+
+                            <
                             /div>
                         );
                     }
                     if (form.type === "Number") {
                         return ( <
-                            div >
+                            div id = "section" >
+
+                            <
+                            div id = "lables" >
                             <
                             label > { form.title } < /label> <
+                            /div>
+
+                            <
                             InputTextField name = { form.name }
-                            placeholder = { form.title }
+                            placeholder = "enter float number"
+                            required = { Boolean(form.required) }
+                            type = "text"
                             _handleChange = { this._handleChange }
-                            /> <
+                            regex = { "^[-+]?[0-9]+[.][0-9]" }
+                            />
+
+                            <
                             /div>
                         );
                     }
                     if (form.type === "Date") {
                         return ( <
-                            div >
+                            div id = "section" >
+
+                            <
+                            div id = "lables" >
                             <
                             label > { form.title } < /label> <
+                            /div>
+
+                            <
                             InputTextField name = { form.name }
-                            placeholder = { form.title }
+                            type = { form.type }
+                            required = { Boolean(form.required) }
                             _handleChange = { this._handleChange }
-                            /> <
+                            />
+
+                            <
                             /div>
                         );
                     }
                     if (form.type === "Location") {
                         return ( <
-                            div >
+                            div id = "section" >
+
+                            <
+                            div id = "lables" >
                             <
                             label > { form.title } < /label> <
-                            InputTextField name = { form.name }
-                            placeholder = { form.title }
-                            _handleChange = { this._handleChange }
-                            /> <
+                            /div>
+
+                            <
+                            img src = { googleImg }
+                            />
+
+                            <
                             /div>
                         );
                     }
                 })
-            }
+            } <
+            /div>
 
             <
-            input type = "submit" / >
+            div id = "border2" >
+            <
+            div id = "sectionSubmit" >
+            <
+            button type = "submit"
+            class = "button" > submit < /button> <
+            /div> <
+            /div>
+
             <
             /form>
-        )
 
+            <
+            /div>
+        )
     }
 }
